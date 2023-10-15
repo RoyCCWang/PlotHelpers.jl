@@ -1,3 +1,3 @@
-# NeuralNetworkLearning.jl
+# PlotHelpers.jl
 
-Documentation for NeuralNetworkLearning.jl
+Documentation for PlotHelpers.jl

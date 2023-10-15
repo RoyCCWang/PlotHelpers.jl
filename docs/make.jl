@@ -1,10 +1,10 @@
 using Documenter
-using NeuralNetworkLearning
+using PlotHelpers
 
 makedocs(
-    sitename = "NeuralNetworkLearning",
+    sitename = "PlotHelpers",
     format = Documenter.HTML(),
-    modules = [NeuralNetworkLearning]
+    modules = [PlotHelpers]
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
