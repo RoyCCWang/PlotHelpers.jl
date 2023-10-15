@@ -1,1 +1,1 @@
-# PlotHelpers.jl
+# VisualizationBag.jl

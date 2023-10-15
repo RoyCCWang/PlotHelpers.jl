@@ -1,10 +1,10 @@
 using Documenter
-using PlotHelpers
+using VisualizationBag
 
 makedocs(
-    sitename = "PlotHelpers",
+    sitename = "VisualizationBag",
     format = Documenter.HTML(),
-    modules = [PlotHelpers]
+    modules = [VisualizationBag]
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.

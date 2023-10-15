@@ -1,3 +1,3 @@
-# PlotHelpers.jl
+# VisualizationBag.jl
 
-Documentation for PlotHelpers.jl
+Documentation for VisualizationBag.jl
