@@ -1,4 +1,4 @@
-function generatecolours(::Type{T}, N::Int) where T
+function generatecolors(::Type{T}, N::Int) where T
     # oversample since the HSV starts from red, and ends at red.
     M = ceil(Int, 1.3*N)
 

@@ -126,6 +126,6 @@ rounded_RGB = collect( round.(RGB[n], digits = 3) for n in eachindex(RGB) )
 
 
 
-colours = PH.generatecolours(Float64, 11)
+colours = PH.generatecolors(Float64, 11)
 
 nothing
