@@ -12,7 +12,7 @@ function plotmeshgrid2D(
     title_string::String;
     x1_title_string::String = "Dimension 1",
     x2_title_string::String = "Dimension 2",
-    cmap = "Greens_r",
+    cmap = "Greys_r", # see https://matplotlib.org/stable/gallery/color/colormap_reference.html
     ) where {T <: Real, L}
 
     #
