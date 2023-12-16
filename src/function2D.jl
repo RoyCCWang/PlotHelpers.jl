@@ -37,3 +37,16 @@ function plotmeshgrid2D(
 
     return fig_num
 end
+
+function getgridrange(Nr::Integer, Nc::Integer)
+    #
+    v_range = LinRange(1, Nr, Nr)
+    h_range = LinRange(1, Nc, Nc)
+    
+
+    x_ranges = Vector{LinRange{T,Int}}(undef, 2)
+    x_ranges[1] = h_range
+    x_ranges[2] = v_range
+
+    return x_ranges
+end
