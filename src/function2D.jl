@@ -38,7 +38,7 @@ function plotmeshgrid2D(
     return fig_num
 end
 
-function getgridranges(::Type{T}, Nr::Integer, Nc::Integer) where R <: Real
+function getgridranges(::Type{T}, Nr::Integer, Nc::Integer) where T <: Real
     #
     v_range = LinRange(1, Nr, Nr)
     h_range = LinRange(1, Nc, Nc)
