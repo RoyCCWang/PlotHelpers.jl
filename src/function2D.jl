@@ -4,7 +4,7 @@
 # x1 is the horizontal axis.
 function plotmeshgrid2D(
     PLT, # PythonPlot
-    x_ranges::Vector{LinRange{T,L}},
+    x_ranges::Vector{RT},
     Y::Matrix{T},
     marker_locations::Vector,
     marker_symbol::String,
@@ -15,7 +15,7 @@ function plotmeshgrid2D(
     cmap = "Greys_r", # see https://matplotlib.org/stable/gallery/color/colormap_reference.html
     vmin = minimum(Y), # color bar range's minimum.
     vmax = maximum(Y), # color bar range's maximum.
-    ) where {T <: Real, L}
+    ) where {T <: Real, RT <: AbstractRange}
 
     #
     @assert length(x_ranges) == 2
