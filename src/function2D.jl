@@ -4,7 +4,7 @@
 # x1 is the horizontal axis.
 function plotmeshgrid2D(
     PLT, # PythonPlot
-    x_ranges::Vector{RT},
+    x_ranges_inp::Vector{RT},
     Y::Matrix{T},
     marker_locations::Vector,
     marker_symbol::String,
@@ -15,7 +15,17 @@ function plotmeshgrid2D(
     cmap = "Greys_r", # see https://matplotlib.org/stable/gallery/color/colormap_reference.html
     vmin = minimum(Y), # color bar range's minimum.
     vmax = maximum(Y), # color bar range's maximum.
+    matrix_mode::Bool = false, # flip the vertical axis.
     ) where {T <: Real, RT <: AbstractRange}
+
+    x_ranges = x_ranges_inp
+    markers = marker_locations
+    if matrix_mode
+        # first dimension is row, which should be the second (i.e. the veritical) dimension for pcolormesh().
+        x_ranges = reverse(x_ranges_inp)
+        markers = reverse(marker_locations)
+        x1_title_string, x2_title_string = x2_title_string, x1_title_string
+    end
 
     #
     @assert length(x_ranges) == 2
@@ -28,15 +38,19 @@ function plotmeshgrid2D(
     PLT.ylabel(x2_title_string)
     PLT.title(title_string)
 
-    for i = 1:length(marker_locations)
+    for i in eachindex(markers)
         #pt = reverse(marker_locations[i])
-        pt = marker_locations[i]
+        pt = markers[i]
         PLT.annotate(marker_symbol, xy=pt, xycoords="data")
     end
 
     PLT.colorbar()
     PLT.axis("scaled")
 
+    if matrix_mode
+        PLT.gca().invert_yaxis()
+    end
+    
     return fig_num
 end
 
