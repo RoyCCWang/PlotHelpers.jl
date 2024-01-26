@@ -10,8 +10,8 @@ function plotmeshgrid2D(
     marker_symbol::String,
     fig_num::Int,
     title_string::String;
-    x1_title_string::String = "Dimension 1",
-    x2_title_string::String = "Dimension 2",
+    horizontal_title::String = "",
+    vertical_title::String = "",
     cmap = "Greys_r", # see https://matplotlib.org/stable/gallery/color/colormap_reference.html
     vmin = minimum(Y), # color bar range's minimum.
     vmax = maximum(Y), # color bar range's maximum.
@@ -24,7 +24,6 @@ function plotmeshgrid2D(
         # first dimension is row, which should be the second (i.e. the veritical) dimension for pcolormesh().
         x_ranges = reverse(x_ranges_inp)
         markers = reverse.(marker_locations)
-        x1_title_string, x2_title_string = x2_title_string, x1_title_string
     end
 
     #
@@ -34,8 +33,8 @@ function plotmeshgrid2D(
     PLT.figure(fig_num)
     fig_num += 1
     PLT.pcolormesh(x_coords[1], x_coords[2], Y, cmap = cmap, shading = "auto", vmin = vmin, vmax = vmax)
-    PLT.xlabel(x1_title_string)
-    PLT.ylabel(x2_title_string)
+    PLT.xlabel(horizontal_title)
+    PLT.ylabel(vertical_title)
     PLT.title(title_string)
 
     for i in eachindex(markers)
