@@ -23,7 +23,7 @@ function plotmeshgrid2D(
     if matrix_mode
         # first dimension is row, which should be the second (i.e. the veritical) dimension for pcolormesh().
         x_ranges = reverse(x_ranges_inp)
-        markers = reverse(marker_locations)
+        markers = reverse.(marker_locations)
         x1_title_string, x2_title_string = x2_title_string, x1_title_string
     end
 
