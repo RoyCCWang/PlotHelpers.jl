@@ -71,6 +71,7 @@ end
         width_ub = 3.5,
         edge_color = "rgba(136,136,136,0.8)",
         x1_is_horizontal_dir = false,
+        mid_pts_trace_title = "Edge midpoint",
     )
 
 For use with PlotlyLight.jl. A PlotlyJS data trace is a `Vector` of `PlotlyLight.Config`s.
@@ -87,6 +88,7 @@ function get2Dedgetraces_variablewidth(
     width_ub = 3.5,
     edge_color = "rgba(136,136,136,0.8)",
     x1_is_horizontal_dir = false,
+    mid_pts_trace_title = "Edge midpoint",
     )
     
     @assert width_lb <= width_ub
@@ -108,8 +110,8 @@ function get2Dedgetraces_variablewidth(
             X[dests[j]][begin+1];
         ]
 
-        edge_h = edge_x1
-        edge_v = edge_x2
+        edge_v = edge_x1
+        edge_h = edge_x2
         if x1_is_horizontal_dir
             edge_h, edge_v = edge_v, edge_h
         end
@@ -138,14 +140,14 @@ function get2Dedgetraces_variablewidth(
         for j in eachindex(srcs)
     )
 
-    x_h = map(xx->xx[begin], mid_pts)
-    x_v = map(xx->xx[begin+1], mid_pts)
+    x_v = map(xx->xx[begin], mid_pts)
+    x_h = map(xx->xx[begin+1], mid_pts)
     if x1_is_horizontal_dir
         x_h, x_v = x_v, x_h
     end
 
     mid_pts_trace = PLY.Config(
-        name = "Edge midpoint",
+        name = mid_pts_trace_title,
         x = x_h,
         y = x_v,
         mode = "markers",
@@ -161,65 +163,3 @@ function get2Dedgetraces_variablewidth(
 
     return out, mid_pts_trace
 end
-
-# # alpha is too faint to see.
-# function get2Dedgetraces_variablealpha(
-#     PLY,
-#     srcs::Vector{Int},
-#     dests::Vector{Int},
-#     ws::Vector{T},
-#     X::Vector;
-#     width = 0.5,
-#     #alpha_lb = 0.3,
-#     alpha_lb = 0.9,
-#     edge_rgb = (136,136,136),
-#     x1_is_horizontal_dir = false,
-#     ) where T
-    
-#     @assert 0 < alpha_lb < 1
-#     @assert length(srcs) == length(dests) == length(ws)
-#     w_lb, w_ub = minimum(ws), maximum(ws)
-    
-#     # 
-#     out = Vector{Any}(undef, length(srcs))
-#     for j in eachindex(srcs)
-
-#         edge_x1 = [
-#             X[srcs[j]][begin];
-#             X[dests[j]][begin];
-#         ]
-
-#         edge_x2 = [
-#             X[srcs[j]][begin+1];
-#             X[dests[j]][begin+1];
-#         ]
-
-#         edge_h = edge_x1
-#         edge_v = edge_x2
-#         if x1_is_horizontal_dir
-#             edge_h, edge_v = edge_v, edge_h
-#         end
-
-#         alpha = convertcompactdomain(
-#             ws[j],
-#             w_lb, w_ub,
-#             alpha_lb, one(T),
-#         )
-#         rgba = tuple(edge_rgb..., alpha)
-
-#         out[j] = PLY.Config(
-#             type = "scatter",
-#             mode = "lines",
-#             x = edge_h,
-#             y = edge_v,
-
-#             line = PLY.Config(
-#                 width = width,
-#                 color = "rgba$rgba",
-#             ),
-#             text = ["weight: $(ws[j])";]
-#         )
-#     end
-
-#     return out
-# end
