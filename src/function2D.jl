@@ -1,6 +1,13 @@
 
 # plot 2D functions
 
+function getaspectratio(sz::Tuple; matrix_mode = true)
+    if matrix_mode
+        return 1, sz[1]/sz[2]
+    end
+    return sz[1]/sz[2], 1
+end
+
 # x1 is the horizontal axis.
 function plotmeshgrid2D(
     PLT, # PythonPlot
@@ -16,7 +23,18 @@ function plotmeshgrid2D(
     vmin = minimum(Y), # color bar range's minimum.
     vmax = maximum(Y), # color bar range's maximum.
     matrix_mode::Bool = false, # flip the vertical axis.
+    color_bar_shrink = Inf,
+    display_color_bar = true,
+    fig_size = getaspectratio(size(Y)),
+    dpi = 96,
+    symmetric_color_range = false,
     ) where {T <: Real, RT <: AbstractRange}
+
+    if symmetric_color_range
+        z = max(abs(minimum(Y)), abs(maximum(Y)))
+        vmin = -z
+        vmax = z
+    end
 
     x_ranges = x_ranges_inp
     markers = marker_locations
@@ -30,7 +48,7 @@ function plotmeshgrid2D(
     @assert length(x_ranges) == 2
     x_coords = collect( collect(x_ranges[d]) for d = 1:2 )
 
-    PLT.figure(fig_num)
+    PLT.figure(fig_num; figsize = fig_size, dpi = dpi)
     fig_num += 1
     PLT.pcolormesh(x_coords[1], x_coords[2], Y, cmap = cmap, shading = "auto", vmin = vmin, vmax = vmax)
     PLT.xlabel(horizontal_title)
@@ -43,13 +61,20 @@ function plotmeshgrid2D(
         PLT.annotate(marker_symbol, xy=pt, xycoords="data")
     end
 
-    PLT.colorbar()
+    if display_color_bar
+        if !isfinite(color_bar_shrink)
+            PLT.colorbar()
+        else
+            PLT.colorbar(shrink = color_bar_shrink)
+        end
+    end
+
     PLT.axis("scaled")
 
     if matrix_mode
         PLT.gca().invert_yaxis()
     end
-    
+
     return fig_num
 end
 
