@@ -25,9 +25,11 @@ function plotmeshgrid2D(
     matrix_mode::Bool = false, # flip the vertical axis.
     color_bar_shrink = Inf,
     display_color_bar = true,
-    fig_size = getaspectratio(size(Y)),
+    fig_size = (6,4),
     dpi = 96,
-    symmetric_color_range = false,
+    symmetric_color_range = false, # if active, overrides vmin and vmax.
+    vcenter = NaN, # uses TwoSlopeNorm
+    rasterized = false,
     ) where {T <: Real, RT <: AbstractRange}
 
     if symmetric_color_range
@@ -50,7 +52,16 @@ function plotmeshgrid2D(
 
     PLT.figure(fig_num; figsize = fig_size, dpi = dpi)
     fig_num += 1
-    PLT.pcolormesh(x_coords[1], x_coords[2], Y, cmap = cmap, shading = "auto", vmin = vmin, vmax = vmax)
+
+    #@show vmin, vmax, vcenter
+    ph = []
+    if isfinite(vcenter)
+        div_norm = PLT.matplotlib.colors.TwoSlopeNorm(vmin = vmin, vcenter = vcenter, vmax = vmax)
+        ph = PLT.pcolormesh(x_coords[1], x_coords[2], Y, cmap = cmap, shading = "auto", norm = div_norm, rasterized = rasterized)
+    else
+        ph = PLT.pcolormesh(x_coords[1], x_coords[2], Y, cmap = cmap, shading = "auto", vmin = vmin, vmax = vmax, rasterized = rasterized)
+    end
+
     PLT.xlabel(horizontal_title)
     PLT.ylabel(vertical_title)
     PLT.title(title_string)
@@ -64,8 +75,11 @@ function plotmeshgrid2D(
     if display_color_bar
         if !isfinite(color_bar_shrink)
             PLT.colorbar()
+            #ph.set_clim(vmin-1e-3, vmax + 1e-3)
+            #ph.set_clim(vmin = -1, vmax=vmax)
         else
             PLT.colorbar(shrink = color_bar_shrink)
+            #ph.set_clim(vmin-1e-3, vmax + 1e-3)
         end
     end
 
